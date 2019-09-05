@@ -1,0 +1,11 @@
+#!/bin/bash
+
+> dead.scss
+cat $(find assets/css/ -type f) |
+grep -Eo '\.[a-z]+[a-z0-9_-]*' | sort | uniq | sed s/.// |
+
+while read CSS; do
+  if ! grep -rqi $CSS lib/platform_web/**/* assets/js/**/* assets/elm/src/**/*; then
+    echo $CSS >> dead.scss;
+  fi
+done
